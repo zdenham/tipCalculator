@@ -9,17 +9,47 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var emojiAmount: UILabel!
+    @IBOutlet weak var totalAmount: UILabel!
+    @IBOutlet weak var tipPercent: UISegmentedControl!
+    @IBOutlet weak var calculatedTip: UILabel!
+    @IBOutlet weak var amount: UITextField!
+    let tipPercents = [1.15, 1.20, 1.22]
+    let emojies = ["😬", "😄", "😍"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        changeEmoji()
+    }
+    
+    @IBAction func touched(_ sender: AnyObject){
+        changeEmoji()
+        calculateTip()
+    }
+    
+    @IBAction func onEdit(_ sender: AnyObject) {
+        changeEmoji()
+        calculateTip()
     }
 
+    @IBAction func onTap(_ sender: AnyObject) {
+        view.endEditing(true)
+    }
+    
+    func calculateTip(){
+        let doubleAmount = Double(amount.text!) ?? 0.0
+        totalAmount.text = String( format: "$%.2f", doubleAmount * tipPercents[tipPercent.selectedSegmentIndex])
+        calculatedTip.text = String(format: "$%.2f",  doubleAmount * (tipPercents[tipPercent.selectedSegmentIndex] - 1))
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-
+    
+    func changeEmoji(){
+        let index = tipPercent.selectedSegmentIndex
+        emojiAmount.text = emojies[index]
+    }
+    
 }
-
